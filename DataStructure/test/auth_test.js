@@ -27,6 +27,15 @@ describe("Auth", function(){
       done();
 
     });
+    user.orgRepos("CienProject2014", function(err, repos){
+
+      for(var i in repos){
+        $.get(repos[i].contributors_url,function(res){
+          console.log(repos[i]);
+          console.log(res);
+        });
+      }
+    });
 
   });
 });
