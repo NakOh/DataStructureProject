@@ -6,7 +6,8 @@
 </head>
 <body>
   <div id="mocha"></div>
-  <script src="//code.jquery.com/jquery-1.11.0.min.js"></script>
+  <script type="text/javascript" src= "http://ajax.googleapis.com/ajax/libs/jquery/1.10.1/jquery.min.js"> </script>
+
   <script src="../graph/graph.js"></script>
   <script src="../lib/base64.js"></script>
   <script src="../lib/underscore-min.js"></script>
@@ -15,7 +16,6 @@
   <script src="../node_modules/chai/chai.js"></script>
    <script>mocha.setup('bdd')</script>
   <script src="auth_test.js"></script>
-  <script src="makegraph.js"></script>
   <script>
     mocha.checkLeaks();
     mocha.globals(['_', 'Github']);
