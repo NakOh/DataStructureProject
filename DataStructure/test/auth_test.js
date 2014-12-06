@@ -13,15 +13,16 @@ describe("Auth", function(){
   this.timeout(10000);
   it("should authenticate with basic auth", function(done){
     var github = new Github({
-      token: "6a30e6b59c0f4b8f066346bcfc8dca274400cd78",
+
+     token: "6a30e6b59c0f4b8f066346bcfc8dca274400cd78",
       auth: "oauth"
     });
 
     var user = github.getUser();
 
     user.repos(function(err, repos) {
-      console.error(util.inspect(err));
-      //console.log(repos); //user의 레포지터리를 가져온다.
+      //console.error(util.inspect(err));
+      console.log(repos); //user의 레포지터리를 가져온다.
       expect(err).to.be.null;
       repos.should.be.ok;
       repos.length.should.be.above(1);
@@ -31,7 +32,8 @@ describe("Auth", function(){
 
     $(document).on("getRepo",function(e, repo){
        $.get(repo.contributors_url, function(res){
-          console.log(repo.name);//해당 orgrepo 의 repo 이름 출력
+          console.log(repo.name);
+          //해당 orgrepo 의 repo 이름 출력
 
         //organization repository에 참여하고 있는 닉네임 추출
         var arr=[];
