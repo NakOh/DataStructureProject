@@ -11,26 +11,47 @@ chai.should();
 
  // var util = require("util");
  */
+var nameArray = [];
+var nodeArray = [];
 
 describe("Auth", function(){
     this.timeout(10000);
     it("should authenticate with basic auth", function(done){
+
         var github = new Github({
+
             token   : "6a30e6b59c0f4b8f066346bcfc8dca274400cd78",
             auth: "oauth"
+
         });
+
+
 
         var user = github.getUser();
 
 
         $(document).on("getRepo",function(e, repo){
-            $.get(repo.contributors_url, function(contributor){
-                console.log("repository name : "+repo.name);//해당 orgrepo 의 repo 이름 출력
-
+            $.get(repo.contributors_url, function(contributor) {
+                console.log("repository name : " + repo.name);//해당 orgrepo 의 repo 이름 출력
+                console.log(repo)
+                var arr = [];
                 //organization repository에 참여하고 있는 닉네임 추출
-                var arr=[];
-                for(var i in contributor){
+                for (var i in contributor) {
+                    //nameArray에서 중복체크해서 넣어준다
                     arr.push(contributor[i].login);
+                    if (nameArray.indexOf(contributor[i].login) == -1)
+                        nameArray.push(contributor[i].login);
+
+                }
+                var edge;
+                for (var i = 0; i < contributor.length-1; i++) {
+                    for (var j = i + 1; j < contributor.length; j++){
+                         edge = {
+                             key: contributor[i].login,
+                             value: contributor[j].login
+                         }
+                        nodeArray.push(edge);
+                    }
                 }
 
                 console.log("--> "+repo.name + "'s member : "+ arr);
@@ -39,6 +60,9 @@ describe("Auth", function(){
                         $(document).trigger("getContributor", contributor[i]);
                     }
                 }
+                console.log("nameArray : "+ nameArray);
+                for(var i in nodeArray)
+                    console.log("edgeArray ["+i+"] = " + nodeArray[i].key + " : " +nodeArray[i].value);
 
             });
 
@@ -49,7 +73,8 @@ describe("Auth", function(){
                 console.log(contributor.login);
                 for (var i in org) {
 
-                    console.log("--> " + i + " : " + org[i].name);
+                    console.log("--> contributor" + i + " : " + org[i].name);
+                    console.log( org[i]);
                 }
                 for (var i in org.repos) {
                     if (i < 15)
@@ -64,6 +89,7 @@ describe("Auth", function(){
 
             for(var i in repos){ //repos에는
                 $(document).trigger("getRepo",repos[i]); //CienProject2014라는 orgRepository에 접근 getrepo를 실행시켜라
+
             }
 
         });
