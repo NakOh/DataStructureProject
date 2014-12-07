@@ -81,7 +81,7 @@ function showGraph() {
             }
          }
       }
-      document.write();
+      document.write(", \n");
       visited.pop();
    }
 }

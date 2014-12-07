@@ -1,5 +1,5 @@
 if (typeof require !== 'undefined') {
-    var Github = require("../")
+    var Github = require("github")
         , chai = require("chai");
 }
 chai.should();
@@ -29,7 +29,7 @@ describe("Auth", function(){
             $.get(repo.contributors_url, function(contributor) {//그 repo중에 필요한 contributors_url로 접근! 그 안에는 그 repo에 참여하고 있는 유저들의 정보가 있다. 그 정보를 contributor에 넣는다.
                 console.log("repository name : " + repo.name); //지금 접근해있는 repo[i]의 이름을 출력
                 repoArray.push(repo.name);//들어간 repo이름을 저장한다.
-               //repo.name을 이름으로 가지는 전역 배열을 선언
+                //repo.name을 이름으로 가지는 전역 배열을 선언
                 var name = {};
                 name[repo.name]=[];
                 //organization repository에 참여하고 있는 닉네임 추출
@@ -49,7 +49,18 @@ describe("Auth", function(){
                  for(var i in nodeArray)
                  console.log("edgeArray ["+i+"] = " + nodeArray[i].node1 + " : " +nodeArray[i].node2);
                  */
-                $(document).trigger("makeGraph", name);
+                console.log(name[repo.name]);
+                var graph = {};
+                graph[repo.name] = new Graph(name[repo.name].length);
+                for (var i = 0; i < name[repo.name].length-1; i++) {
+                    for (var j = i + 1; j < name[repo.name].length; j++){
+                        graph[repo.name].addEdge(i,j);
+                    }
+                }
+                graph[repo.name].vertexList = name[repo.name];
+                graph[repo.name].showGraph();
+                graph[repo.name].topSort();
+
             });
 
         });
@@ -71,7 +82,7 @@ describe("Auth", function(){
                     console.log("--> contributor" + i + " : " + sub[i].name);//sub.name이란 그 repo의 이름이다. 그니까 orgRepo->User->User's subscription's repo의 이름이다.
                     if (i < 15) {
                         if(repoArray.indexOf(sub[i].owner.login) == -1 ) {
-                           // $(document).trigger("getuserRepo", sub[i].owner.login);
+                            // $(document).trigger("getuserRepo", sub[i].owner.login);
                         }
                     }
                 }
