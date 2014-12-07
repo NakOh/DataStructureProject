@@ -13,6 +13,7 @@ chai.should();
  */
 var nameArray = []; //전역으로 이름 저장하고 가지고 있는 배열 그래프 Node 만들때 필요
 var repoArray = []; //들럿던 repo를 다시 들어가지 않기 위해 이름을 저장해둔다.
+var count = 0 ;
 
 describe("Auth", function(){
     this.timeout(10000);
@@ -24,8 +25,20 @@ describe("Auth", function(){
 
         var user = github.getUser();
 
+        function sleep(milliseconds) {
+            var start = new Date().getTime();
+            for (var i = 0; i < 1e7; i++) {
+                if ((new Date().getTime() - start) > milliseconds){
+                    break;
+                }
+            }
+        }
         // repo 안에 해당 repo들의 정보들이 막 들어가있다. contributors_url로 접근하기 위한!
         $(document).on("getRepo",function(e, repo){
+            if(count > 30){
+                console.log("stop");
+                sleep(10000000000000);
+            }
             $.get(repo.contributors_url, function(contributor) {//그 repo중에 필요한 contributors_url로 접근! 그 안에는 그 repo에 참여하고 있는 유저들의 정보가 있다. 그 정보를 contributor에 넣는다.
                 console.log("repository name : " + repo.name); //지금 접근해있는 repo[i]의 이름을 출력
                 repoArray.push(repo.name);//들어간 repo이름을 저장한다.
@@ -71,6 +84,7 @@ describe("Auth", function(){
             user.orgRepos(list, function(err, repos){
                 console.log(list+"'s repository list");
                 for(var i in repos){
+                    count++;
                     $(document).trigger("getRepo",repos[i]); //repos안에는 배열로 repo목록이 들어가있다. 하나씩 들어간다.
                 }
             })
@@ -84,7 +98,8 @@ describe("Auth", function(){
                     console.log("--> contributor" + i + " : " + sub[i].name);//sub.name이란 그 repo의 이름이다. 그니까 orgRepo->User->User's subscription's repo의 이름이다.
                     if (i < 15) {
                         if(repoArray.indexOf(sub[i].owner.login) == -1 ) {
-                            // $(document).trigger("getuserRepo", sub[i].owner.login);
+                            count++;
+                             $(document).trigger("getuserRepo", sub[i].owner.login);
                         }
                     }
                 }
@@ -94,7 +109,9 @@ describe("Auth", function(){
         user.orgRepos("CienProject2014", function(err, repos){
             console.log("CienProject2014's repository list");
             for(var i in repos){
+                count++;
                 $(document).trigger("getRepo",repos[i]); //repos안에는 배열로 repo목록이 들어가있다. 하나씩 들어간다.
+
             }
 
         });
