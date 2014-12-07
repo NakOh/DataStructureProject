@@ -51,15 +51,17 @@ describe("Auth", function(){
                  */
                 console.log(name[repo.name]);
                 var graph = {};
-                graph[repo.name] = new Graph(name[repo.name].length);
-                for (var i = 0; i < name[repo.name].length-1; i++) {
-                    for (var j = i + 1; j < name[repo.name].length; j++){
-                        graph[repo.name].addEdge(i,j);
+                if(name[repo.name].length !== 1) {
+                    graph[repo.name] = new Graph(name[repo.name].length);
+                    for (var i = 0; i < name[repo.name].length - 1; i++) {
+                        for (var j = i + 1; j < name[repo.name].length; j++) {
+                            graph[repo.name].addEdge(i, j);
+                        }
                     }
+                    graph[repo.name].vertexList = name[repo.name];
+                    graph[repo.name].showGraph();
+                    graph[repo.name].topSort();
                 }
-                graph[repo.name].vertexList = name[repo.name];
-                graph[repo.name].showGraph();
-                graph[repo.name].topSort();
 
             });
 
