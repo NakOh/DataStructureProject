@@ -43,12 +43,7 @@ $(document).on("getRepo",function(e, repo){
                 //$(document).trigger("getSubscriptions", contributor[i]);
             }
         }
-        /*
-         console.log("nameArray : "+ nameArray);
-         for(var i in nodeArray)
-         console.log("edgeArray ["+i+"] = " + nodeArray[i].node1 + " : " +nodeArray[i].node2);
-         */
-        console.log(name[repo.name]);
+
         var graph = {};
         if(name[repo.name].length !== 1) {
             graph[repo.name] = new Graph(name[repo.name].length);
@@ -61,7 +56,9 @@ $(document).on("getRepo",function(e, repo){
             document.write(repo.name+"</br>");
             graph[repo.name].getList(graph[repo.name]);
             graph[repo.name].showGraph();
+            graph[repo.name].saveGraph(graph[repo.name]);
             document.write("</br>");
+            graph[repo.name].makeLastGraph();
         }
 
     });

@@ -1,6 +1,10 @@
-var namespace = new Array();
+var uniqueNames = new Array();
+var lastGraph;
+var manygraph = {};
+var graphnumber = 0;
 
 function Graph(v) {
+   //vertices는 숫자이다.
    this.vertices = v;
    this.vertexList = [];
    this.edges = 0;
@@ -22,8 +26,9 @@ function Graph(v) {
    this.pathTo = pathTo;
    this.topSortHelper = topSortHelper;
    this.topSort = topSort;
-   this.compareTo = compareTo;
+   this.saveGraph = saveGraph;
    this.getList = getList;
+   this.makeLastGraph = makeLastGraph;
 
 }
 
@@ -139,15 +144,39 @@ function pathTo(v) {
 }
 
 function getList(g){
-   console.log(g);
+   var namespace = new Array();
+
    for (var i in g.vertexList) {
       namespace.push(g.vertexList[i]);
    }
-   console.log(namespace);
+
+   $.each(namespace, function(i, el){
+      if($.inArray(el, uniqueNames) === -1) uniqueNames.push(el);
+   });
+
 }
-function compareTo(g1, g2){
-   console.log(g1);
-   console.log(g2);
+function saveGraph(graph){
+   graphnumber++;
+   manygraph[graphnumber]=graph;
+   console.log(manygraph);//만들어진 그래프가 저장됩니다.
    // var newList = g1.vertexList.concat(g2.vertexList);
    //return newList;
+   for(var i in manygraph) {
+      console.log(manygraph[i]);
+   }
+}
+
+function makeLastGraph(){
+
+   var g = new Graph(uniqueNames.length);
+   g.vertexList = uniqueNames;
+
+   var first_index = manygraph[1].vertexList[0].indexOf(uniqueNames);
+   var second_index = manygraph[1].vertexList[1].indexOf(uniqueNames);
+   g.addEdge(first_index, second_index);
+
+   //노드를 전체 참여자 list로 만든다.
+   console.log(g);
+   g.showGraph();
+
 }
