@@ -40,7 +40,7 @@ function topSort() {
    }
    for (var i = 0; i < stack.length; i++) {
       if (stack[i] != undefined && stack[i] != false) {
-         document.write(this.vertexList[stack[i]]);
+         $('#orga_table').append(this.vertexList[stack[i]]);
       }
    }
 }
@@ -75,25 +75,29 @@ function addEdge(v,w) {
 // a new function to display symbolic names instead of numbers
 function showGraph() {
    var visited = [];
+
    for (var i = 0; i < this.vertices; ++i) {
-      document.write("["+this.vertexList[i] + "]'s project team (Size : "+this.vertices+") → ");
+      
+      $('#orga_table').append("["+this.vertexList[i] + "]'s project team (Size : "+this.vertices+") → ");
       visited.push(this.vertexList[i]);
       for (var j = 0; j < this.vertices; ++j) {
          if (this.adj[i][j] != undefined) {
             if (visited.indexOf(this.vertexList[j]) < 0) {
-               document.write(this.vertexList[j] + ', ');
+               $('#orga_table').append(this.vertexList[j] + ', ');
             }
          }
       }
-      document.write("<br/><br/>");
+      $('#orga_table').append("<br/>");
       visited.pop();
+
    }
+
 }
 
 function dfs(v) {
    this.marked[v] = true;
    if (this.adj[v] != undefined) {
-      document.write("Visited vertex: " + v);
+      $('#orga_table').append("Visited vertex: " + v);
    }
    for (var w in this.adj[v]) {
       if (!this.marked[w]) {
@@ -109,7 +113,7 @@ function bfs(s) {
    while (queue.length > 0) {
       var v = queue.shift();
       if (typeof(v) != "string") {
-         document.write("Visited vertex: " + v);
+         $('#orga_table').append("Visited vertex: " + v);
       }
       for (var w in this.adj[v]) {
          if (!this.marked[w]) {

@@ -3,19 +3,38 @@
     <meta charset="utf-8">
     <title>Mocha Tests</title>
     <link rel="stylesheet" href="node_modules/mocha/mocha.css" />
-    <script type="text/javascript" src= "http://ajax.googleapis.com/ajax/libs/jquery/1.10.1/jquery.min.js"> </script>
-
-
+    <link href="css/bootstrap.min.css" rel="stylesheet" media="screen">
+    <script src="js/jquery-1.10.2.js"></script>
+    <!-- 모든 합쳐진 플러그인을 포함하거나 (아래) 필요한 각각의 파일들을 포함하세요 -->
 
 </head>
-<body style="tex-align:center;">
+
+<body>
 <script src="graph/graph.js"></script>
 <script src="lib/base64.js"></script>
 <script src="lib/underscore-min.js"></script>
 <script src="github.js"></script>
-<script src="conn_github.js"></script>
-<script>
+<script src="js/bootstrap.min.js"></script>
 
+
+
+<div class="row">
+    <div class="col-md-9 col-md-push-2  ">
+        <br/>
+    <form id="orga_form" method="post">
+        <label name="orga_name">시작 Repository</label> <input type="text" name="orga_name">
+        <button type="submit" name="submit" value="전송" onclick="javascript:submit_function(orga_name);return false;">검색</button>
+
+    </form>
+</div>
+</div>
+<div class="col-md-9 col-md-push-2">
+<div class="col-md-9 orga_list" id="orga_table">
+
+</div></div>
+<script src="conn_github.js"></script>
+
+<script>
     var submit_function = (function(orga_name_input){
         //이곳으로 시작된다.
         var orga_name = orga_name_input.value;
@@ -29,13 +48,6 @@
             }
         });
     });
-    </script>
-    <form id="orga_form" method="post">
-    <input type="text" name="orga_name">
-    <button type="submit" name="submit" value="전송" onclick="javascript:submit_function(orga_name);return false;">전송</button>
-
-</form><div class="orga_list">
-
-</div>
+</script>
 </body>
 </html>

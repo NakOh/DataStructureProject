@@ -58,10 +58,11 @@ $(document).on("getRepo",function(e, repo){
                 }
             }
             graph[repo.name].vertexList = name[repo.name];
-            document.write(repo.name+"</br>");
+            $('#orga_table').append(repo.name+"</br>");
             graph[repo.name].getList(graph[repo.name]);
+
             graph[repo.name].showGraph();
-            document.write("</br>");
+            $('#orga_table').append("</br>");
         }
 
     });
