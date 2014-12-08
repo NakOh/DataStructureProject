@@ -1,6 +1,5 @@
-var uniqueNames = new Array();
-var lastGraph;
-var manygraph = {};
+﻿var uniqueNames = new Array();
+var manygraph = new Array();
 var graphnumber = 0;
 
 function Graph(v) {
@@ -165,15 +164,36 @@ function saveGraph(graph){
    console.log(manygraph);//만들어진 그래프가 저장됩니다.
    // var newList = g1.vertexList.concat(g2.vertexList);
    //return newList;
-   for(var i in manygraph) {
-      console.log(manygraph[i]);
-   }
 }
 
 var makeLastGraph = (function(){
 
    var g = new Graph(uniqueNames.length);
    g.vertexList = uniqueNames;
+   for(var k = 1; k < manygraph.length; k++) {
+      for (var m = 0; m < manygraph[k].vertexList.length - 1; m++) {
+         for (var j = m + 1; j < manygraph[k].vertexList.length; j++) {
+            for (var i in uniqueNames) {
+               var first_index = uniqueNames.indexOf(manygraph[k].vertexList[m]);
+               if (first_index != -1) {
+                  break;
+               }
+            }
+            for (var l in uniqueNames) {
+               var second_index = uniqueNames.indexOf(manygraph[k].vertexList[j]);
+               if (second_index != -1) {
+                  break;
+               }
+            }
+
+            if(first_index != -1 && second_index != -1) {
+               g.addEdge(first_index, second_index);
+            }
+
+         }
+      }
+   }
+
 
    var first_index = uniqueNames[i].indexOf(manygraph[1].vertexList[0]);
    var second_index = manygraph[1].vertexList[1].indexOf(uniqueNames);
@@ -181,7 +201,6 @@ var makeLastGraph = (function(){
    g.addEdge(first_index, second_index);
 
    //노드를 전체 참여자 list로 만든다.
-   $('#orga_table').append("하이");
    g.showGraph();
 
 });
