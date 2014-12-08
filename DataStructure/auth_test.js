@@ -48,10 +48,11 @@ describe("Auth", function(){
                     if (nameArray.indexOf(contributor[i].login) == -1)//모든 이름을 담는 배열에 이름이 없을 경우에만 추가한다.
                         nameArray.push(contributor[i].login); //전역 Name에 추가
                 }
-                console.log("--> "+ repo.name + "'s member : "+ name[repo.name]);
+                console.log("--> "+ repo.name +
+                "'s member : "+ name[repo.name]);
                 for(var i in contributor) {//contributor는 한 repo에 참여하고 있는 사람의 정보이다.
                     if(i<5){//일단은 5명 이내만 가져와본다.
-                        $(document).trigger("getSubscriptions", contributor[i]);
+                        //$(document).trigger("getSubscriptions", contributor[i]);
                     }
                 }
                 /*
@@ -71,7 +72,10 @@ describe("Auth", function(){
                     graph[repo.name].vertexList = name[repo.name];
                     document.write(repo.name+"</br>");
                     graph[repo.name].showGraph();
+
                     document.write("</br>");
+
+                    //graph[repo.name].topSort();
 
                 }
 
@@ -110,9 +114,7 @@ describe("Auth", function(){
             for(var i in repos){
                 count++;
                 $(document).trigger("getRepo",repos[i]); //repos안에는 배열로 repo목록이 들어가있다. 하나씩 들어간다.
-
             }
-
         });
 
     });
