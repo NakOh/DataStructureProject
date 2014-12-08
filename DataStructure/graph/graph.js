@@ -1,3 +1,5 @@
+var namespace = [];
+
 function Graph(v) {
    this.vertices = v;
    this.vertexList = [];
