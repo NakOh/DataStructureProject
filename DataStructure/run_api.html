@@ -19,9 +19,12 @@
 
 
 <div class="row text-center col-md-12">
-    <div class="col-md-12 ">
-        <br/>
+    <div class="page-header">
+        
         <h1>GITHUB 개발자 관계 그래프 Machine</h1>
+    </div>
+    <div class="col-md-12 ">
+
         <br/>
         <form id="orga_form" method="post">
             <label name="orga_name" class="label-info">시작 Repository</label> <input type="text" name="orga_name" class="input-sm">
@@ -42,7 +45,7 @@
     var submit_function = (function(orga_name_input){
         //이곳으로 시작된다.
         var orga_name = orga_name_input.value;
-        alert(orga_name+"와 연결된 그래프");
+
         user.orgRepos(orga_name, function(err, repos) {
             console.log(orga_name + "'s repository list");
 
@@ -52,6 +55,8 @@
             }
         });
     });
+
+
 </script>
 </body>
 </html>

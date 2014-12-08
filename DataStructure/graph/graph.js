@@ -82,7 +82,7 @@ function showGraph() {
    var visited = [];
 
    for (var i = 0; i < this.vertices; ++i) {
-      
+
       $('#orga_table').append("["+this.vertexList[i] + "]'s project team (Size : "+this.vertices+") → ");
       visited.push(this.vertexList[i]);
       for (var j = 0; j < this.vertices; ++j) {
@@ -170,17 +170,18 @@ function saveGraph(graph){
    }
 }
 
-function makeLastGraph(){
+var makeLastGraph = (function(){
 
    var g = new Graph(uniqueNames.length);
    g.vertexList = uniqueNames;
 
-   var first_index = manygraph[1].vertexList[0].indexOf(uniqueNames);
+   var first_index = uniqueNames[i].indexOf(manygraph[1].vertexList[0]);
    var second_index = manygraph[1].vertexList[1].indexOf(uniqueNames);
+
    g.addEdge(first_index, second_index);
 
    //노드를 전체 참여자 list로 만든다.
-   console.log(g);
+   $('#orga_table').append("하이");
    g.showGraph();
 
-}
+});
