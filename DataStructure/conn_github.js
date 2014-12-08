@@ -22,7 +22,7 @@ function sleep(milliseconds) {
 $(document).on("getRepo",function(e, repo){
     if(count > 30){
         console.log("stop");
-        sleep(10000000000000);
+//        sleep(10000000000000);
     }
     $.get(repo.contributors_url, function(contributor) {//그 repo중에 필요한 contributors_url로 접근! 그 안에는 그 repo에 참여하고 있는 유저들의 정보가 있다. 그 정보를 contributor에 넣는다.
         console.log("repository name : " + repo.name); //지금 접근해있는 repo[i]의 이름을 출력

@@ -194,12 +194,7 @@ var makeLastGraph = (function(){
       }
    }
 
-
-   var first_index = uniqueNames[i].indexOf(manygraph[1].vertexList[0]);
-   var second_index = manygraph[1].vertexList[1].indexOf(uniqueNames);
-
-   g.addEdge(first_index, second_index);
-
+   $('#orga_table').append("<hr color='black' size='2'/>");
    //노드를 전체 참여자 list로 만든다.
    g.showGraph();
 
