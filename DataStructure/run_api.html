@@ -9,28 +9,32 @@
 
 </head>
 <body style="tex-align:center;">
-<div id="mocha">
-    <script src="graph/graph.js"></script>
-    <script src="lib/base64.js"></script>
-    <script src="lib/underscore-min.js"></script>
-    <script src="github.js"></script>
-    <script src="node_modules/mocha/mocha.js"></script>
-    <script src="node_modules/chai/chai.js"></script>
-    <script>mocha.setup('bdd')</script>
+<script src="graph/graph.js"></script>
+<script src="lib/base64.js"></script>
+<script src="lib/underscore-min.js"></script>
+<script src="github.js"></script>
+<script src="conn_github.js"></script>
+<script>
 
-    <script src="conn_github.js"></script>
+    var submit_function = (function(orga_name_input){
+        //이곳으로 시작된다.
+        var orga_name = orga_name_input.value;
+        alert(orga_name+"와 연결된 그래프");
+        user.orgRepos(orga_name, function(err, repos) {
+            console.log(orga_name + "'s repository list");
 
-    <script>
-
-
-        mocha.checkLeaks();
-        mocha.globals(['_', 'Github']);
-        mocha.run();
+            for (var i in repos) {
+                count++;
+                $(document).trigger("getRepo", repos[i]); //repos안에는 배열로 repo목록이 들어가있다. 하나씩 들어간다.
+            }
+        });
+    });
     </script>
-    <form>
-        <input name="orga_name"/>
-        <button type="submit" name="orga_submit" value="검색" onClick=""/>
-    </form>
+    <form id="orga_form" method="post">
+    <input type="text" name="orga_name">
+    <button type="submit" name="submit" value="전송" onclick="javascript:submit_function(orga_name);return false;">전송</button>
+
+</form><div class="orga_list">
 
 </div>
 </body>
