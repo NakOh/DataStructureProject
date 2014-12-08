@@ -53,13 +53,15 @@ $(document).on("getRepo",function(e, repo){
                 }
             }
             graph[repo.name].vertexList = name[repo.name];
-            document.write(repo.name+"</br>");
+            $('#orga_table').append(repo.name+"</br>");
             graph[repo.name].getList(graph[repo.name]);
+
             graph[repo.name].showGraph();
-            graph[repo.name].saveGraph(graph[repo.name]);
-            document.write("</br>");
-            graph[repo.name].makeLastGraph();
+            $('#orga_table').append("</br>");
         }
+        if($("#make_graph").length == 0 )
+            $('#orga_form').append(' <button type="submit" class="btn btn-default" id="make_graph" name="submit" value="전송" onclick="javascript:submit_function(orga_name);return false;">그래프 만들기</button>')
+
 
     });
 
