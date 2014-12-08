@@ -2,7 +2,7 @@ if (typeof require !== 'undefined') {
     var Github = require("github")
         , chai = require("chai");
 }
-chai.should();
+chai.should();6
 
 /* not used
  var expect = chai.expect
@@ -35,10 +35,7 @@ describe("Auth", function(){
         }
         // repo 안에 해당 repo들의 정보들이 막 들어가있다. contributors_url로 접근하기 위한!
         $(document).on("getRepo",function(e, repo){
-            if(count > 30){
-                console.log("stop");
-                sleep(10000000000000);
-            }
+
             $.get(repo.contributors_url, function(contributor) {//그 repo중에 필요한 contributors_url로 접근! 그 안에는 그 repo에 참여하고 있는 유저들의 정보가 있다. 그 정보를 contributor에 넣는다.
                 console.log("repository name : " + repo.name); //지금 접근해있는 repo[i]의 이름을 출력
                 repoArray.push(repo.name);//들어간 repo이름을 저장한다.
@@ -72,8 +69,10 @@ describe("Auth", function(){
                         }
                     }
                     graph[repo.name].vertexList = name[repo.name];
+                    document.write(repo.name+"</br>");
                     graph[repo.name].showGraph();
-                    graph[repo.name].topSort();
+                    document.write("</br>");
+
                 }
 
             });
@@ -99,7 +98,7 @@ describe("Auth", function(){
                     if (i < 15) {
                         if(repoArray.indexOf(sub[i].owner.login) == -1 ) {
                             count++;
-                             $(document).trigger("getuserRepo", sub[i].owner.login);
+                            // $(document).trigger("getuserRepo", sub[i].owner.login);
                         }
                     }
                 }

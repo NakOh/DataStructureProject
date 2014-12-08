@@ -1,3 +1,5 @@
+var namespace = [];
+
 function Graph(v) {
    this.vertices = v;
    this.vertexList = [];
@@ -81,7 +83,7 @@ function showGraph() {
             }
          }
       }
-      document.write(", \n");
+      document.write(", </br>");
       visited.pop();
    }
 }
