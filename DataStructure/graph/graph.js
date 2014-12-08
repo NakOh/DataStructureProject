@@ -1,6 +1,5 @@
 var uniqueNames = new Array();
-var lastGraph;
-var manygraph = {};
+var manygraph = new Array();
 var graphnumber = 0;
 
 function Graph(v) {
@@ -171,21 +170,18 @@ function makeLastGraph(){
 
    var g = new Graph(uniqueNames.length);
    g.vertexList = uniqueNames;
-
    for(var k = 1; k < manygraph.length; k++) {
-      for (var m = 0; m < manygraph[k].length - 1; m++) {
-         for (var j = m + 1; j < manygraph[k].length; j++) {
+      for (var m = 0; m < manygraph[k].vertexList.length - 1; m++) {
+         for (var j = m + 1; j < manygraph[k].vertexList.length; j++) {
             for (var i in uniqueNames) {
-               var first_index = uniqueNames[i].indexOf(manygraph[k].vertexList[m]);
+               var first_index = uniqueNames.indexOf(manygraph[k].vertexList[m]);
                if (first_index != -1) {
-                  console.log(first_index);
                   break;
                }
             }
-            for (var i in uniqueNames) {
-               var second_index = uniqueNames[i].indexOf(manygraph[k].vertexList[j]);
+            for (var l in uniqueNames) {
+               var second_index = uniqueNames.indexOf(manygraph[k].vertexList[j]);
                if (second_index != -1) {
-                  console.log(second_index);
                   break;
                }
             }
