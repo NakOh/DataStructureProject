@@ -15,6 +15,8 @@ var nameArray = []; //전역으로 이름 저장하고 가지고 있는 배열 �
 var repoArray = []; //들럿던 repo를 다시 들어가지 않기 위해 이름을 저장해둔다.
 var count = 0 ;
 
+var graph = {};
+
 describe("Auth", function(){
     this.timeout(10000);
     it("should authenticate with basic auth", function(done){
@@ -35,7 +37,9 @@ describe("Auth", function(){
         }
         // repo 안에 해당 repo들의 정보들이 막 들어가있다. contributors_url로 접근하기 위한!
         $(document).on("getRepo",function(e, repo){
-
+            if(count > 40){
+                sleep(1000);
+            }
             $.get(repo.contributors_url, function(contributor) {//그 repo중에 필요한 contributors_url로 접근! 그 안에는 그 repo에 참여하고 있는 유저들의 정보가 있다. 그 정보를 contributor에 넣는다.
                 console.log("repository name : " + repo.name); //지금 접근해있는 repo[i]의 이름을 출력
                 repoArray.push(repo.name);//들어간 repo이름을 저장한다.
@@ -60,8 +64,6 @@ describe("Auth", function(){
                  for(var i in nodeArray)
                  console.log("edgeArray ["+i+"] = " + nodeArray[i].node1 + " : " +nodeArray[i].node2);
                  */
-                console.log(name[repo.name]);
-                var graph = {};
                 if(name[repo.name].length !== 1) {
                     graph[repo.name] = new Graph(name[repo.name].length);
                     for (var i = 0; i < name[repo.name].length - 1; i++) {
@@ -71,12 +73,10 @@ describe("Auth", function(){
                     }
                     graph[repo.name].vertexList = name[repo.name];
                     document.write(repo.name+"</br>");
+                    graph[repo.name].getList(graph[repo.name]);
                     graph[repo.name].showGraph();
-
                     document.write("</br>");
-
                     //graph[repo.name].topSort();
-
                 }
 
             });
@@ -108,14 +108,16 @@ describe("Auth", function(){
                 }
             });
         });
+
         //이곳으로 시작된다.
-        user.orgRepos("CienProject2014", function(err, repos){
-            console.log("CienProject2014's repository list");
+        user.orgRepos("libgdx", function(err, repos){
+            console.log("repository list");
             for(var i in repos){
                 count++;
                 $(document).trigger("getRepo",repos[i]); //repos안에는 배열로 repo목록이 들어가있다. 하나씩 들어간다.
+
             }
         });
-
     });
+
 });

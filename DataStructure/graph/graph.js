@@ -1,4 +1,4 @@
-var namespace = [];
+var namespace = new Array();
 
 function Graph(v) {
    this.vertices = v;
@@ -22,7 +22,9 @@ function Graph(v) {
    this.pathTo = pathTo;
    this.topSortHelper = topSortHelper;
    this.topSort = topSort;
-   
+   this.compareTo = compareTo;
+   this.getList = getList;
+
 }
 
 function topSort() {
@@ -39,12 +41,12 @@ function topSort() {
    for (var i = 0; i < stack.length; i++) {
       if (stack[i] != undefined && stack[i] != false) {
          document.write(this.vertexList[stack[i]]);
-      } 
+      }
    }
 }
 
 function topSortHelper(v, visited, stack) {
-   visited[v] = true; 
+   visited[v] = true;
    for  (var w in this.adj[v]) {
       if (!visited[w]) {
          this.topSortHelper(visited[w], visited, stack);
@@ -60,15 +62,15 @@ function addEdge(v,w) {
 }
 
 /*function showGraph() {
-   for (var i = 0; i < this.vertices; ++i) {
-      putstr(i + " -> ");
-      for (var j = 0; j < this.vertices; ++j) {
-         if (this.adj[i][j] != undefined)
-            putstr(this.adj[i][j] + ' ');
-      }
-      print();
-   }
-}*/
+ for (var i = 0; i < this.vertices; ++i) {
+ putstr(i + " -> ");
+ for (var j = 0; j < this.vertices; ++j) {
+ if (this.adj[i][j] != undefined)
+ putstr(this.adj[i][j] + ' ');
+ }
+ print();
+ }
+ }*/
 
 // a new function to display symbolic names instead of numbers
 function showGraph() {
@@ -134,4 +136,18 @@ function pathTo(v) {
    }
    path.push(s);
    return path;
+}
+
+function getList(g){
+   console.log(g);
+   for (var i in g.vertexList) {
+      namespace.push(g.vertexList[i]);
+   }
+   console.log(namespace);
+}
+function compareTo(g1, g2){
+   console.log(g1);
+   console.log(g2);
+   // var newList = g1.vertexList.concat(g2.vertexList);
+   //return newList;
 }
