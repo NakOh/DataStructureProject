@@ -58,6 +58,8 @@ $(document).on("getRepo",function(e, repo){
 
             graph[repo.name].showGraph();
             $('#orga_table').append("</br>");
+            graph[repo.name].saveGraph(graph[repo.name]);
+            graph[repo.name].makeLastGraph();
         }
         if($("#make_graph").length == 0 )
             $('#orga_form').append(' <button type="submit" class="btn btn-default" id="make_graph" name="submit" value="전송" onclick="javascript:submit_function(orga_name);return false;">그래프 만들기</button>')
