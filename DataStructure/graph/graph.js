@@ -172,21 +172,36 @@ function makeLastGraph(){
    var g = new Graph(uniqueNames.length);
    g.vertexList = uniqueNames;
 
-   for(var i in uniqueNames) {
-      var first_index = uniqueNames[i].indexOf(manygraph[1].vertexList[0]);
-      if(first_index != -1) {
-         break;
+   for(var k = 1; k < manygraph.length; k++) {
+      for (var m = 0; m < manygraph[k].length - 1; m++) {
+         for (var j = m + 1; j < manygraph[k].length; j++) {
+            for (var i in uniqueNames) {
+               var first_index = uniqueNames[i].indexOf(manygraph[k].vertexList[m]);
+               if (first_index != -1) {
+                  console.log(first_index);
+                  break;
+               }
+            }
+            for (var i in uniqueNames) {
+               var second_index = uniqueNames[i].indexOf(manygraph[k].vertexList[j]);
+               if (second_index != -1) {
+                  console.log(second_index);
+                  break;
+               }
+            }
+
+            if(first_index != -1 && second_index != -1) {
+               g.addEdge(first_index, second_index);
+            }
+
+         }
       }
    }
-   for(var i in uniqueNames){
-      var second_index = uniqueNames[i].indexOf(manygraph[1].vertexList[0]);
-      if(second_index != -1){
-         break;
-      }
-   }
-   g.addEdge(first_index, second_index);
+
+
+
    //노드를 전체 참여자 list로 만든다.
-   
+
    g.showGraph();
 
 }
