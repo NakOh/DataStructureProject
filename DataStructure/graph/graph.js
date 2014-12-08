@@ -72,16 +72,16 @@ function addEdge(v,w) {
 function showGraph() {
    var visited = [];
    for (var i = 0; i < this.vertices; ++i) {
-      document.write(this.vertexList[i] + " -> ");
+      document.write("["+this.vertexList[i] + "]'s project team (Size : "+this.vertices+") → ");
       visited.push(this.vertexList[i]);
       for (var j = 0; j < this.vertices; ++j) {
          if (this.adj[i][j] != undefined) {
             if (visited.indexOf(this.vertexList[j]) < 0) {
-               document.write(this.vertexList[j] + ' ');
+               document.write(this.vertexList[j] + ', ');
             }
          }
       }
-      document.write(", \n");
+      document.write("<br/><br/>");
       visited.pop();
    }
 }
