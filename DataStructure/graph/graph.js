@@ -131,7 +131,7 @@ function finaladdEdge(v,w) {
 function showGraph() {
    var visited = [];
    for (var i = 0; i < this.vertices; ++i) {
-      $('#orga_table').append("[ <b>"+this.vertexList.sort()[i] + "</b> (Weight : "+(this.vertices-1) +") ] 와 동일한 프로젝트에 참여한 개발자  → ");
+      $('#orga_table').append("[ <b>"+this.vertexList.sort()[i] + "</b> (Edge 개수 : "+(this.vertices-1) +") ] 와 동일한 프로젝트에 참여한 개발자  → ");
       visited.push(this.vertexList.sort()[i]);
       for (var j = 0; j < this.vertices; ++j) {
          if (this.adj[i][j] != undefined) {
@@ -147,8 +147,10 @@ function showGraph() {
 
 function showLastGraph() {
    var visited = [];
+   var edgeSizeMap = new Map();
    for (var i = 0; i < this.vertices; ++i) {
-      $('#orga_table').append("[ <b>"+this.vertexList.sort()[i] + "</b> (Weight : "+(this.adj[i].length - 1)+")] 와 동일한 프로젝트에 참여한 개발자  → ");
+      $('#orga_table').append("[ <b>"+this.vertexList.sort()[i] + "</b> (Edge : "+(this.adj[i].length - 1)+")] 와 동일한 프로젝트에 참여한 개발자  → ");
+      edgeSizeMap.set(this.vertexList.sort()[i], this.adj[i].length - 1);
       visited.push(this.vertexList.sort()[i]);//전체 그래프의 노드의 리스트를 하나씩 집어 넣음
       console.dir(this.adj);
       for (var j = 0; j < this.vertices; ++j) {
@@ -168,8 +170,12 @@ function showLastGraph() {
          }
       }
       $('#orga_table').append("<br/>");
+      console.log(edgeSizeMap);
       visited.pop();
    }
+   $('#orga_table').append("<br/><h2>분석결과</h2>");
+
+
 }
 
 function dfs(v) {
