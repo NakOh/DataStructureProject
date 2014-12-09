@@ -122,11 +122,11 @@ function finalWeight(){
    for(var i in nodes){
       index[i] = nodes[i].toString().split(',');
    }
-
+   $('#orga_table').append('<br/><h3>개발자간 친밀도</h3>');
    for (var i = 0; i < nodes.length  - 1; i++) {
-         $('#orga_table').append(uniqueNames[index[i][j]] + "와" + uniqueNames[index[i][j+1]] + " 의 weight는" + finalNodeMap[index[i][j] + "," + index[i][j+1]] + "이다" + "</br>");
+         $('#orga_table').append("<b>"+uniqueNames[index[i][j]] + "</b> 와 <b>" + uniqueNames[index[i][j+1]] + "</b> 의 친밀도는" + finalNodeMap[index[i][j] + "," + index[i][j+1]] + "이다<br/>" + "</br>");
    }
-
+   $('#orga_table').append('<br/>');
 
 }
 
@@ -189,6 +189,7 @@ function showLastGraph() {
       visited.pop();
    }
    $('#orga_table').append("<br/><h2>분석결과</h2>");
+   $('#orga_table').append("<br/><h3>개발자 활동량 TOP5</h3>");
    var keyArray =[];
    var valueArray=[];
 
@@ -197,9 +198,8 @@ function showLastGraph() {
     keyArray.push(key);
     valueArray.push(value);
     });
-   for(var i=0; i<this.vertexList.length; i++){
-      console.log(keyArray[i]);
-      console.log(valueArray[i]);
+   for(var i=0; i<5; i++){
+      $('#orga_table').append("<br/><b>"+keyArray[i]+"</b> / Edge Size : "+valueArray[i]+"<br/>");
    }
 
 
