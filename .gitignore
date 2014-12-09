@@ -3,3 +3,4 @@ _site/*
 
 test/.DS_Store
 node_modules/
+*.xml
