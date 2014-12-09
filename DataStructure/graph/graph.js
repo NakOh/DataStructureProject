@@ -170,7 +170,16 @@ function showLastGraph() {
          }
       }
       $('#orga_table').append("<br/>");
-      console.log(edgeSizeMap);
+      var keyArray =[];
+      var valueArray=[];
+      edgeSizeMap.foreach(function (key, value) {
+         keyArray.push(key);
+         valueArray.push(value);
+      });
+      for(var i=0; i<3; i++){
+         console.log(keyArray[i]);
+         console.log(valueArray[i]);
+      }
       visited.pop();
    }
    $('#orga_table').append("<br/><h2>분석결과</h2>");
