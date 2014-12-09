@@ -16,7 +16,7 @@ function Graph(v) {
    this.edges = 0;
    this.adj = [];
    for (var i = 0; i < this.vertices; ++i) {
-      this.adj[i] = [];
+      this.adj[i] = [];//그럼 adj[0] = []이 되고? 즉 배열이 되고 ? 배열 에 푸쉬 ""를?
       this.adj[i].push("");
    }
    this.addEdge = addEdge;
@@ -84,13 +84,10 @@ function addEdge(v,w) {
 }
 
 function finaladdEdge(v,w) {
-
-   this.adj[v].push(w);
-   this.adj[w].push(v);
-
    var node = v + "," + w;
    var edge1 = v;
    var edge2 = w;
+
    if(edgeMap[edge1] === undefined && edgeMap[edge2] === undefined) {
       edgeMap[edge1] = 1;
       edgeMap[edge2] = 1;
@@ -109,6 +106,8 @@ function finaladdEdge(v,w) {
    }
    if(nodeMap1[node] === undefined){
       nodeMap1[node] = 1;
+      this.adj[v].push(w);
+      this.adj[w].push(v);
       this.edges++;
    }
    else{
@@ -132,14 +131,12 @@ function finaladdEdge(v,w) {
 function showGraph() {
    var visited = [];
    for (var i = 0; i < this.vertices; ++i) {
-      $('#orga_table').append("["+this.vertexList[i] + "]'와 함께하는 개발자들 (Size : "+this.vertices+") → ");
-      console.log(this.vertexList);
-      console.log(edgeMap);
-      visited.push(this.vertexList[i]);
+      $('#orga_table').append("["+this.vertexList.sort()[i] + "]'와 함께하는 개발자들 (Size : "+this.vertices+") → ");
+      visited.push(this.vertexList.sort()[i]);
       for (var j = 0; j < this.vertices; ++j) {
          if (this.adj[i][j] != undefined) {
-            if (visited.indexOf(this.vertexList[j]) < 0) {
-               $('#orga_table').append(this.vertexList[j] + ', ');
+            if (visited.indexOf(this.vertexList.sort()[j]) < 0) {
+               $('#orga_table').append(this.vertexList.sort()[j] + ', ');
             }
          }
       }
@@ -151,17 +148,23 @@ function showGraph() {
 function showLastGraph() {
    var visited = [];
    for (var i = 0; i < this.vertices; ++i) {
-      $('#orga_table').append("["+this.vertexList[i] + "]'와 함께하는 개발자들 (Size : "+edgeMap[i]+") → ");
-      visited.push(this.vertexList[i]);
+      $('#orga_table').append("["+this.vertexList.sort()[i] + "]'와 함께하는 개발자들 (Size : "+(this.adj[i].length - 1)+") → ");
+      visited.push(this.vertexList.sort()[i]);//전체 그래프의 노드의 리스트를 하나씩 집어 넣음
+       console.dir(this.adj);    //문제는 i가 6일때 zarej일때 이다.
       for (var j = 0; j < this.vertices; ++j) {
-         if (this.adj[i][j] != undefined) {
-            if (visited.indexOf(this.vertexList[j]) < 0) {
-               $('#orga_table').append(this.vertexList[j] + ', ');
+         if(i==this.vertexList){
+            
+         }
+         if (this.adj[i][j] != undefined) {//adj[6][3]이 RANYO가 존재한다는 뜻!! why? (3,6)이 들어갔다.
+            if (visited.indexOf(this.vertexList.sort()[j]) < 0) {
+               console.log(this.vertexList.sort()[j] + ', ');
+               $('#orga_table').append(this.vertexList.sort()[j] + ', ');
             }
          }
       }
       $('#orga_table').append("<br/>");
       visited.pop();
+
    }
 }
 
@@ -234,9 +237,9 @@ function saveGraph(graph){
 }
 
 var makeLastGraph = (function(){
+   console.log(uniqueNames.length);
    g = new Graph(uniqueNames.length);
    g.vertexList = uniqueNames.sort();
-
    for(var k = 1; k < manygraph.length; k++) {
       for (var m = 0; m < manygraph[k].vertexList.length - 1; m++) {
          for (var j = m + 1; j < manygraph[k].vertexList.length; j++) {

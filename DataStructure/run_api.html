@@ -41,13 +41,12 @@
 <script src="conn_github.js"></script>
 
 <script>
+
     var submit_function = (function(orga_name_input){
         //이곳으로 시작된다.
         var orga_name = orga_name_input.value;
 
         user.orgRepos(orga_name, function(err, repos) {
-            console.log(orga_name + "'s repository list");
-
             for (var i in repos) {
                 count++;
                 $(document).trigger("getRepo", repos[i]); //repos안에는 배열로 repo목록이 들어가있다. 하나씩 들어간다.
