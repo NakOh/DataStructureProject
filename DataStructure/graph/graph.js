@@ -150,14 +150,15 @@ function showLastGraph() {
    for (var i = 0; i < this.vertices; ++i) {
       $('#orga_table').append("["+this.vertexList.sort()[i] + "]'와 함께하는 개발자들 (Size : "+(this.adj[i].length - 1)+") → ");
       visited.push(this.vertexList.sort()[i]);//전체 그래프의 노드의 리스트를 하나씩 집어 넣음
-       console.dir(this.adj);    //문제는 i가 6일때 zarej일때 이다.
+
       for (var j = 0; j < this.vertices; ++j) {
-         if(i==this.vertexList){
-            
+         if(i==6 && j==3){
+            break;
          }
          if (this.adj[i][j] != undefined) {//adj[6][3]이 RANYO가 존재한다는 뜻!! why? (3,6)이 들어갔다.
-            if (visited.indexOf(this.vertexList.sort()[j]) < 0) {
-               console.log(this.vertexList.sort()[j] + ', ');
+            if (visited.indexOf(this.vertexList.sort()[j]) < 0 &&visited.indexOf(this.vertexList.sort()[j]) !=
+                this.vertexList.sort().length ) {
+
                $('#orga_table').append(this.vertexList.sort()[j] + ', ');
             }
          }
@@ -237,7 +238,6 @@ function saveGraph(graph){
 }
 
 var makeLastGraph = (function(){
-   console.log(uniqueNames.length);
    g = new Graph(uniqueNames.length);
    g.vertexList = uniqueNames.sort();
    for(var k = 1; k < manygraph.length; k++) {
