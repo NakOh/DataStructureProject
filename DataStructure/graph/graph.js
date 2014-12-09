@@ -3,14 +3,11 @@ var manygraph = new Array();
 var graphnumber = 0;
 var g ;
 var nodeMap = {};
-
-var nodeMap1 = {};
+var finalNodeMap = {};
 var edgeMap = {};
 
 function Graph(v) {
    //vertices는 숫자이다.
-
-   this.weight = 0;
    this.vertices = v;
    this.vertexList = [];
    this.edges = 0;
@@ -36,6 +33,7 @@ function Graph(v) {
    this.saveGraph = saveGraph;
    this.getList = getList;
    this.finaladdEdge = finaladdEdge;
+   this.finalWeight = finalWeight;
 
 }
 
@@ -104,17 +102,33 @@ function finaladdEdge(v,w) {
       edgeMap[edge1] = edgeMap[edge1] + 1;
       edgeMap[edge2] = edgeMap[edge2] + 1;
    }
-   if(nodeMap1[node] === undefined){
-      nodeMap1[node] = 1;
+
+   if(finalNodeMap[node] === undefined){
+      finalNodeMap[node] = 1;
       this.adj[v].push(w);
       this.adj[w].push(v);
       this.edges++;
    }
    else{
-      nodeMap1[node] = nodeMap[node] + 1 ;
+      finalNodeMap[node] = finalNodeMap[node] + 1 ;
    }
 }
 
+
+function finalWeight(){
+   var nodes = Object.keys(finalNodeMap);
+   var index = {};
+   var j = 0;
+   for(var i in nodes){
+      index[i] = nodes[i].toString().split(',');
+   }
+
+   for (var i = 0; i < nodes.length  - 1; i++) {
+         $('#orga_table').append(uniqueNames[index[i][j]] + "와" + uniqueNames[index[i][j+1]] + " 의 weight는" + finalNodeMap[index[i][j] + "," + index[i][j+1]] + "이다" + "</br>");
+   }
+
+
+}
 
 /*function showGraph() {
  for (var i = 0; i < this.vertices; ++i) {
@@ -150,7 +164,6 @@ function showLastGraph() {
    for (var i = 0; i < this.vertices; ++i) {
       $('#orga_table').append("[ <b>"+this.vertexList.sort()[i] + "</b> (Weight : "+(this.adj[i].length - 1)+")] 와 동일한 프로젝트에 참여한 개발자  → ");
       visited.push(this.vertexList.sort()[i]);//전체 그래프의 노드의 리스트를 하나씩 집어 넣음
-      console.dir(this.adj);
       for (var j = 0; j < this.vertices; ++j) {
          if (this.adj[i][j] != undefined) {//adj[6][3]이 RANYO가 존재한다는 뜻!! why? (3,6)이 들어갔다.
             if(i == this.adj.length-1) {
@@ -243,18 +256,18 @@ function saveGraph(graph){
 var makeLastGraph = (function(){
    g = new Graph(uniqueNames.length);
    g.vertexList = uniqueNames.sort();
+
    for(var k = 1; k < manygraph.length; k++) {
+      var sortManyList = manygraph[k].vertexList.sort();
       for (var m = 0; m < manygraph[k].vertexList.length - 1; m++) {
          for (var j = m + 1; j < manygraph[k].vertexList.length; j++) {
             for (var i in uniqueNames) {
-               var sortManyList = manygraph[k].vertexList.sort();
                var first_index = uniqueNames.indexOf(sortManyList[m]);
                if (first_index != -1) {
                   break;
                }
             }
             for (var l in uniqueNames) {
-               var sortManyList = manygraph[k].vertexList.sort();
                var second_index = uniqueNames.indexOf(sortManyList[j]);
                if (second_index != -1) {
                   break;
@@ -262,6 +275,7 @@ var makeLastGraph = (function(){
             }
 
             if(first_index != -1 && second_index != -1) {
+               console.log(first_index + "," + second_index);
                g.finaladdEdge(first_index, second_index);
             }
 
@@ -272,5 +286,5 @@ var makeLastGraph = (function(){
    $('#orga_table').append("<hr color='black' size='2'/><h1 class='h1'>만들어진 그래프</h1>");
    //노드를 전체 참여자 list로 만든다.
    g.showLastGraph();
-
+   g.finalWeight();
 });
