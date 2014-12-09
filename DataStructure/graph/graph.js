@@ -3,7 +3,7 @@ var manygraph = new Array();
 var graphnumber = 0;
 var g ;
 var nodeMap = {};
-var finalNodeMap = {};
+var finalNodeMap = {},keys=[], k, i, len;
 var edgeMap = {};
 
 function Graph(v) {
@@ -116,15 +116,20 @@ function finaladdEdge(v,w) {
 }
 
 function finalWeight(){
-   var nodes = Object.keys(finalNodeMap);
+   var nodes = new Array();
+   var sortedfinalNodeMap = sortObject(finalNodeMap);
+   for( var i=sortedfinalNodeMap.length-1 ; i>sortedfinalNodeMap.length-6; i--) {
+      nodes.push(sortedfinalNodeMap[i].key);
+   }
    var index = {};
    var j = 0;
    for(var i in nodes){
       index[i] = nodes[i].toString().split(',');
    }
-   $('#orga_table').append('<br/><h3>개발자간 친밀도</h3>');
-   for (var i = 0; i < nodes.length  - 1; i++) {
-         $('#orga_table').append("<b>"+uniqueNames[index[i][j]] + "</b> 와 <b>" + uniqueNames[index[i][j+1]] + "</b> 의 친밀도는" + finalNodeMap[index[i][j] + "," + index[i][j+1]] + "이다<br/>" + "</br>");
+   $('#orga_table').append('<br/><h3>개발자간 친밀도 Top5</h3>');
+
+   for (var i = 0; i < nodes.length ; i++) {
+      $('#orga_table').append("<b>"+uniqueNames[index[i][j]] + "</b> 와 <b>" + uniqueNames[index[i][j+1]] + "</b> 의 친밀도는" + finalNodeMap[index[i][j] + "," + index[i][j+1]] + "이다<br/>" + "</br>");
    }
    $('#orga_table').append('<br/>');
 
@@ -159,49 +164,57 @@ function showGraph() {
    }
 }
 
+function sortObject(obj) {
+   var arr = [];
+   for (var prop in obj) {
+      if (obj.hasOwnProperty(prop)) {
+         arr.push({
+            'key': prop,
+            'value': obj[prop]
+         });
+      }
+   }
+   arr.sort(function(a, b) { return a.value - b.value; });
+   //arr.sort(function(a, b) { a.value.toLowerCase().localeCompare(b.value.toLowerCase()); }); //use this to sort as strings
+   return arr; // returns array
+}
+
 function showLastGraph() {
    var visited = [];
-   var edgeSizeMap = new Map();
+   var topdev = {};
    for (var i = 0; i < this.vertices; ++i) {
-      $('#orga_table').append("[ <b>"+this.vertexList.sort()[i] + "</b> (Edge : "+(this.adj[i].length - 1)+")] 와 동일한 프로젝트에 참여한 개발자  → ");
-      edgeSizeMap.set(this.vertexList.sort()[i], this.adj[i].length - 1);
+      var cout = 0;
+      $('#orga_table').append("[ <b>"+this.vertexList.sort()[i] + "</b>"+")] 와 동일한 프로젝트에 참여한 개발자  → ");
       visited.push(this.vertexList.sort()[i]);//전체 그래프의 노드의 리스트를 하나씩 집어 넣음
-       for (var j = 0; j < this.vertices; ++j) {
-         if (this.adj[i][j] != undefined) {//adj[6][3]이 RANYO가 존재한다는 뜻!! why? (3,6)이 들어갔다.
+      for (var j = 0; j < this.vertices; ++j) {
+         if (this.adj[i][j] != undefined) {
             if(i == this.adj.length-1) {
                if(j != this.adj[i].length-1){
                   if (visited.indexOf(this.vertexList.sort()[j]) < 0) {
+                     cout++;
                      $('#orga_table').append(this.vertexList.sort()[j] + ', ');
                   }
                }
             }
             else {
                if (visited.indexOf(this.vertexList.sort()[j]) < 0) {
+                  cout++;
                   $('#orga_table').append(this.vertexList.sort()[j] + ', ');
                }
             }
          }
       }
-      $('#orga_table').append("<br/>");
-
-
-
+      $('#orga_table').append("<b>" + "연결된 Edge :" + cout +"</b>"+"<br/>");
+      topdev[this.vertexList.sort()[i]]=cout;
       visited.pop();
    }
+   var sortedtopdev = sortObject(topdev);
    $('#orga_table').append("<br/><h2>분석결과</h2>");
    $('#orga_table').append("<br/><h3>개발자 활동량 TOP5</h3>");
-   var keyArray =[];
-   var valueArray=[];
 
-   console.dir(edgeSizeMap);
-    edgeSizeMap.foreach(function (key, value) {
-    keyArray.push(key);
-    valueArray.push(value);
-    });
-   for(var i=0; i<5; i++){
-      $('#orga_table').append("<br/><b>"+keyArray[i]+"</b> / Edge Size : "+valueArray[i]+"<br/>");
+   for(var i=sortedtopdev.length-1 ; i>sortedtopdev.length-6; i--){
+      $('#orga_table').append("<br/><b>"+sortedtopdev[i].key+"</b> / Edge Size : "+sortedtopdev[i].value+"<br/>");
    }
-
 
 }
 
@@ -220,7 +233,7 @@ function dfs(v) {
 function bfs(s) {
    var queue = [];
    this.marked[s] = true;
-   queue.unshift(s);
+   queue.push(s);
    while (queue.length > 0) {
       var v = queue.shift();
       if (typeof(v) != "string") {
@@ -230,7 +243,7 @@ function bfs(s) {
          if (!this.marked[w]) {
             this.edgeTo[w] = v;
             this.marked[w] = true;
-            queue.unshift(w);
+            queue.push(w);
          }
       }
    }
@@ -295,7 +308,6 @@ var makeLastGraph = (function(){
             }
 
             if(first_index != -1 && second_index != -1) {
-               console.log(first_index + "," + second_index);
                g.finaladdEdge(first_index, second_index);
             }
 
@@ -307,4 +319,5 @@ var makeLastGraph = (function(){
    //노드를 전체 참여자 list로 만든다.
    g.showLastGraph();
    g.finalWeight();
+
 });
