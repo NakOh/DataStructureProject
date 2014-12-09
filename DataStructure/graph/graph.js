@@ -115,14 +115,6 @@ function finaladdEdge(v,w) {
    }
 }
 
-function weight(){
-   console.log(nodeMap);
-}
-
-function finalWeight(){
-   console.log(finalNodeMap);
-}
-
 function finalWeight(){
    var nodes = Object.keys(finalNodeMap);
    var index = {};
@@ -174,7 +166,6 @@ function showLastGraph() {
       $('#orga_table').append("[ <b>"+this.vertexList.sort()[i] + "</b> (Edge : "+(this.adj[i].length - 1)+")] 와 동일한 프로젝트에 참여한 개발자  → ");
       edgeSizeMap.set(this.vertexList.sort()[i], this.adj[i].length - 1);
       visited.push(this.vertexList.sort()[i]);//전체 그래프의 노드의 리스트를 하나씩 집어 넣음
-
        for (var j = 0; j < this.vertices; ++j) {
          if (this.adj[i][j] != undefined) {//adj[6][3]이 RANYO가 존재한다는 뜻!! why? (3,6)이 들어갔다.
             if(i == this.adj.length-1) {
@@ -192,19 +183,24 @@ function showLastGraph() {
          }
       }
       $('#orga_table').append("<br/>");
-      var keyArray =[];
-      var valueArray=[];
-      edgeSizeMap.foreach(function (key, value) {
-         keyArray.push(key);
-         valueArray.push(value);
-      });
-      for(var i=0; i<3; i++){
-         console.log(keyArray[i]);
-         console.log(valueArray[i]);
-      }
+
+
+
       visited.pop();
    }
    $('#orga_table').append("<br/><h2>분석결과</h2>");
+   var keyArray =[];
+   var valueArray=[];
+
+   console.dir(edgeSizeMap);
+    edgeSizeMap.foreach(function (key, value) {
+    keyArray.push(key);
+    valueArray.push(value);
+    });
+   for(var i=0; i<this.vertexList.length; i++){
+      console.log(keyArray[i]);
+      console.log(valueArray[i]);
+   }
 
 
 }
