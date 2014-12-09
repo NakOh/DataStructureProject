@@ -1,9 +1,16 @@
 ﻿var uniqueNames = new Array();
 var manygraph = new Array();
 var graphnumber = 0;
+var g ;
+var nodeMap = {};
+
+var nodeMap1 = {};
+var edgeMap = {};
 
 function Graph(v) {
    //vertices는 숫자이다.
+
+   this.weight = 0;
    this.vertices = v;
    this.vertexList = [];
    this.edges = 0;
@@ -14,6 +21,7 @@ function Graph(v) {
    }
    this.addEdge = addEdge;
    this.showGraph = showGraph;
+   this.showLastGraph = showLastGraph;
    this.dfs = dfs;
    this.marked = [];
    for (var i = 0; i < this.vertices; ++i) {
@@ -27,7 +35,7 @@ function Graph(v) {
    this.topSort = topSort;
    this.saveGraph = saveGraph;
    this.getList = getList;
-   this.makeLastGraph = makeLastGraph;
+   this.finaladdEdge = finaladdEdge;
 
 }
 
@@ -60,10 +68,54 @@ function topSortHelper(v, visited, stack) {
 }
 
 function addEdge(v,w) {
+
    this.adj[v].push(w);
    this.adj[w].push(v);
-   this.edges++;
+
+   var node = v + "," + w;
+
+   if(nodeMap[node] === undefined){
+      nodeMap[node] = 1;
+      this.edges++;
+   }
+   else{
+      nodeMap[node] = nodeMap[node] + 1 ;
+   }
 }
+
+function finaladdEdge(v,w) {
+
+   this.adj[v].push(w);
+   this.adj[w].push(v);
+
+   var node = v + "," + w;
+   var edge1 = v;
+   var edge2 = w;
+   if(edgeMap[edge1] === undefined && edgeMap[edge2] === undefined) {
+      edgeMap[edge1] = 1;
+      edgeMap[edge2] = 1;
+   }
+   else  if(edgeMap[edge1] !== undefined && edgeMap[edge2] === undefined){
+      edgeMap[edge1] = edgeMap[edge1] + 1;
+      edgeMap[edge2] = 1;
+   }
+   else if(edgeMap[edge1] === undefined && edgeMap[edge2] !== undefined){
+      edgeMap[edge1] = 1;
+      edgeMap[edge2] = edgeMap[edge2] + 1;
+   }
+   else{
+      edgeMap[edge1] = edgeMap[edge1] + 1;
+      edgeMap[edge2] = edgeMap[edge2] + 1;
+   }
+   if(nodeMap1[node] === undefined){
+      nodeMap1[node] = 1;
+      this.edges++;
+   }
+   else{
+      nodeMap1[node] = nodeMap[node] + 1 ;
+   }
+}
+
 
 /*function showGraph() {
  for (var i = 0; i < this.vertices; ++i) {
@@ -79,10 +131,10 @@ function addEdge(v,w) {
 // a new function to display symbolic names instead of numbers
 function showGraph() {
    var visited = [];
-
    for (var i = 0; i < this.vertices; ++i) {
-
-      $('#orga_table').append("["+this.vertexList[i] + "]'s project team (Size : "+this.vertices+") → ");
+      $('#orga_table').append("["+this.vertexList[i] + "]'와 함께하는 개발자들 (Size : "+this.vertices+") → ");
+      console.log(this.vertexList);
+      console.log(edgeMap);
       visited.push(this.vertexList[i]);
       for (var j = 0; j < this.vertices; ++j) {
          if (this.adj[i][j] != undefined) {
@@ -93,9 +145,24 @@ function showGraph() {
       }
       $('#orga_table').append("<br/>");
       visited.pop();
-
    }
+}
 
+function showLastGraph() {
+   var visited = [];
+   for (var i = 0; i < this.vertices; ++i) {
+      $('#orga_table').append("["+this.vertexList[i] + "]'와 함께하는 개발자들 (Size : "+edgeMap[i]+") → ");
+      visited.push(this.vertexList[i]);
+      for (var j = 0; j < this.vertices; ++j) {
+         if (this.adj[i][j] != undefined) {
+            if (visited.indexOf(this.vertexList[j]) < 0) {
+               $('#orga_table').append(this.vertexList[j] + ', ');
+            }
+         }
+      }
+      $('#orga_table').append("<br/>");
+      visited.pop();
+   }
 }
 
 function dfs(v) {
@@ -161,33 +228,35 @@ function getList(g){
 function saveGraph(graph){
    graphnumber++;
    manygraph[graphnumber]=graph;
-   console.log(manygraph);//만들어진 그래프가 저장됩니다.
+   //console.log(manygraph);//만들어진 그래프가 저장됩니다.
    // var newList = g1.vertexList.concat(g2.vertexList);
    //return newList;
 }
 
 var makeLastGraph = (function(){
+   g = new Graph(uniqueNames.length);
+   g.vertexList = uniqueNames.sort();
 
-   var g = new Graph(uniqueNames.length);
-   g.vertexList = uniqueNames;
    for(var k = 1; k < manygraph.length; k++) {
       for (var m = 0; m < manygraph[k].vertexList.length - 1; m++) {
          for (var j = m + 1; j < manygraph[k].vertexList.length; j++) {
             for (var i in uniqueNames) {
-               var first_index = uniqueNames.indexOf(manygraph[k].vertexList[m]);
+               var sortManyList = manygraph[k].vertexList.sort();
+               var first_index = uniqueNames.indexOf(sortManyList[m]);
                if (first_index != -1) {
                   break;
                }
             }
             for (var l in uniqueNames) {
-               var second_index = uniqueNames.indexOf(manygraph[k].vertexList[j]);
+               var sortManyList = manygraph[k].vertexList.sort();
+               var second_index = uniqueNames.indexOf(sortManyList[j]);
                if (second_index != -1) {
                   break;
                }
             }
 
             if(first_index != -1 && second_index != -1) {
-               g.addEdge(first_index, second_index);
+               g.finaladdEdge(first_index, second_index);
             }
 
          }
@@ -196,6 +265,6 @@ var makeLastGraph = (function(){
 
    $('#orga_table').append("<hr color='black' size='2'/>");
    //노드를 전체 참여자 list로 만든다.
-   g.showGraph();
+   g.showLastGraph();
 
 });
