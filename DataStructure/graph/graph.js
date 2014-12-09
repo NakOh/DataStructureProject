@@ -131,7 +131,7 @@ function finaladdEdge(v,w) {
 function showGraph() {
    var visited = [];
    for (var i = 0; i < this.vertices; ++i) {
-      $('#orga_table').append("["+this.vertexList.sort()[i] + "]'와 함께하는 개발자들 (Size : "+this.vertices+") → ");
+      $('#orga_table').append("[ <b>"+this.vertexList.sort()[i] + "</b> (Weight : "+(this.vertices-1) +") ] 와 동일한 프로젝트에 참여한 개발자  → ");
       visited.push(this.vertexList.sort()[i]);
       for (var j = 0; j < this.vertices; ++j) {
          if (this.adj[i][j] != undefined) {
@@ -148,7 +148,7 @@ function showGraph() {
 function showLastGraph() {
    var visited = [];
    for (var i = 0; i < this.vertices; ++i) {
-      $('#orga_table').append("["+this.vertexList.sort()[i] + "]'와 함께하는 개발자들 (Size : "+(this.adj[i].length - 1)+") → ");
+      $('#orga_table').append("[ <b>"+this.vertexList.sort()[i] + "</b> (Weight : "+(this.adj[i].length - 1)+")] 와 동일한 프로젝트에 참여한 개발자  → ");
       visited.push(this.vertexList.sort()[i]);//전체 그래프의 노드의 리스트를 하나씩 집어 넣음
       console.dir(this.adj);
       for (var j = 0; j < this.vertices; ++j) {
@@ -269,7 +269,7 @@ var makeLastGraph = (function(){
       }
    }
 
-   $('#orga_table').append("<hr color='black' size='2'/>");
+   $('#orga_table').append("<hr color='black' size='2'/><h1 class='h1'>만들어진 그래프</h1>");
    //노드를 전체 참여자 list로 만든다.
    g.showLastGraph();
 
