@@ -150,22 +150,25 @@ function showLastGraph() {
    for (var i = 0; i < this.vertices; ++i) {
       $('#orga_table').append("["+this.vertexList.sort()[i] + "]'와 함께하는 개발자들 (Size : "+(this.adj[i].length - 1)+") → ");
       visited.push(this.vertexList.sort()[i]);//전체 그래프의 노드의 리스트를 하나씩 집어 넣음
-
+      console.dir(this.adj);
       for (var j = 0; j < this.vertices; ++j) {
-         if(i==6 && j==3){
-            break;
-         }
          if (this.adj[i][j] != undefined) {//adj[6][3]이 RANYO가 존재한다는 뜻!! why? (3,6)이 들어갔다.
-            if (visited.indexOf(this.vertexList.sort()[j]) < 0 &&visited.indexOf(this.vertexList.sort()[j]) !=
-                this.vertexList.sort().length ) {
-
-               $('#orga_table').append(this.vertexList.sort()[j] + ', ');
+            if(i == this.adj.length-1) {
+               if(j != this.adj[i].length-1){
+                  if (visited.indexOf(this.vertexList.sort()[j]) < 0) {
+                     $('#orga_table').append(this.vertexList.sort()[j] + ', ');
+                  }
+               }
+            }
+            else {
+               if (visited.indexOf(this.vertexList.sort()[j]) < 0) {
+                  $('#orga_table').append(this.vertexList.sort()[j] + ', ');
+               }
             }
          }
       }
       $('#orga_table').append("<br/>");
       visited.pop();
-
    }
 }
 
